@@ -30,6 +30,7 @@
 
 ### Webpage image
 ![webpage](image-2.png)
+![webpage-other-half](image-3.png)
 
 ## Extension download link
 - https://chromewebstore.google.com/detail/truthlens/nifimncllhnamacijidgafhineilmpjn
@@ -53,6 +54,10 @@
 - Turn the developer mode ON.
 - And click "Load unpacked" on the top right corner.
 - Then just select the "TruthLens" folder, it will add extension and then you can use it locally.
+
+## Privacy Policy
+- Erm here is the privacy policy page "https://truthlens-ten-iota.vercel.app/privacy".
+- Made it since it was a requirement by chrome to publish extension.
 
 ## Licensing
 - This project has MIT License.
