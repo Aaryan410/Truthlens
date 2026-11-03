@@ -1,223 +1,316 @@
 <!DOCTYPE html>
-<html lang = "en">
-    <head>
-        <meta charset = "UTF-8">
-        <meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
-        <title>TruthLens</title>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TruthLens</title>
 
-        <link rel = "stylesheet" href = "{{ url_for('static', filename = 'style.css') }}">
-        
-        <link rel = "preconnect" href = "https://fonts.googleapis.com">
-        <link href = "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel = "stylesheet">
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
 
-        <script src = "{{ url_for('static', filename = 'compare.js') }}" defer></script>
-    </head>
-    <body>
-        <main class = "page">
-            <header>
-                <h1>TruthLens</h1>
-                <p>Explore hardware specifications.</p>
-            </header>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
 
-            <form id = "compare-form" action = "{{ url_for('home') }}" method = "get">
-                <div class = "hardware-picker">
-                    <label for = "hardware">Compare</label>
-                    <select id = "hardware" name = "hardware">
-                        <option value = "cpu" {% if hardware == "cpu" %}selected{% endif %}>CPUs</option>
-                        <option value = "gpu" {% if hardware == "gpu" %}selected{% endif %}>GPUs</option>
-                    </select>
-                </div>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
+        rel="stylesheet"
+    >
 
-                <div class = "comparison-grid">
-                    {% for side in sides %}
-                        <section class = "model-card" data-side = "{{ side.prefix }}" aria-labelledby = "heading-{{ side.prefix }}">
-                            <h2 id = "heading-{{ side.prefix }}">{{ side.title }}</h2>
-                            <div class = "side-fields">
-                                {% for field in side.fields %}
-                                    <div class = "field">
-                                        <label for = "{{ field.name }}">
-                                            {{ field.label }}
-                                        </label>
+    <script
+        src="{{ url_for('static', filename='compare.js') }}"
+        defer>
+    </script>
 
-                                        <select id = "{{ field.name }}" name = "{{ field.name }}" {% if not field.options %}disabled{% endif %}> 
-                                            {% for value, label in field.options.items() %}
-                                                <option value = "{{ value }}" {% if value == field.selected %}selected{% endif %}>
-                                                    {{ label }}
-                                                </option>
-                                            {% else %}
-                                                <option value = "">
-                                                    No data available
-                                                </option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                                {% endfor %}
-                            </div>
+    <script
+        src="{{ url_for('static', filename='ai-summary.js') }}"
+        defer>
+    </script>
+</head>
+<body>
+    <main class="page">
+        <header>
+            <h1>TruthLens</h1>
+            <p>Explore hardware specifications.</p>
+        </header>
 
-                            <h3 class = "model-name">{{ side.name }}</h3>
+        <form id="compare-form" action="{{ url_for('home') }}" method="get">
+            <div class="hardware-picker">
+                <label for="hardware">Compare</label>
 
-                            {% if side.error %}
-                                <p role = "alert">{{ side.error }}</p>
-                            {% elif side.specs %}
-                                <details class = "specifications">
-                                    <summary>Hardware specifications</summary>
+                <select id="hardware" name="hardware">
+                    <option value="cpu" {% if hardware == "cpu" %}selected{% endif %}>
+                        CPUs
+                    </option>
 
-                                    <dl>
-                                        {% for key, value in side.specs.items() if key != "model" %}
-                                            <div class = "spec-row">
-                                                <dt>
-                                                    {{ "VRAM" if key == "vram" else key.replace("_", " ") | title }}
-                                                </dt>
+                    <option value="gpu" {% if hardware == "gpu" %}selected{% endif %}>
+                        GPUs
+                    </option>
+                </select>
+            </div>
 
-                                                <dd>
-                                                    {% if value is mapping %}
-                                                        {% for kind, amount in value.items() %}
-                                                            {{ kind | title }}: {{ amount }}
-                                                            {% if key == "clock_rate" %}
-                                                                GHz
-                                                            {% endif %}
-                                                            {% if not loop.last %}, {% endif %}
-                                                        {% endfor %}
-                                                    {% else %}
-                                                        {{ value }}
+            <div class="comparison-grid">
+                {% for side in sides %}
+                    <section
+                        class="model-card"
+                        data-side="{{ side.prefix }}"
+                        aria-labelledby="heading-{{ side.prefix }}"
+                    >
+                        <h2 id="heading-{{ side.prefix }}">
+                            {{ side.title }}
+                        </h2>
+
+                        <div class="side-fields">
+                            {% for field in side.fields %}
+                                <div class="field">
+                                    <label for="{{ field.name }}">
+                                        {{ field.label }}
+                                    </label>
+
+                                    <select
+                                        id="{{ field.name }}"
+                                        name="{{ field.name }}"
+                                        {% if not field.options %}disabled{% endif %}
+                                    >
+                                        {% for value, label in field.options.items() %}
+                                            <option
+                                                value="{{ value }}"
+                                                {% if value == field.selected %}selected{% endif %}
+                                            >
+                                                {{ label }}
+                                            </option>
+                                        {% else %}
+                                            <option value="">
+                                                No data available
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <h3 class="model-name">{{ side.name }}</h3>
+
+                        {% if side.error %}
+                            <p role="alert">{{ side.error }}</p>
+
+                        {% elif side.specs %}
+                            <details class="specifications">
+                                <summary>Hardware specifications</summary>
+
+                                <dl>
+                                    {% for key, value in side.specs.items() if key != "model" %}
+                                        <div class="spec-row">
+                                            <dt>
+                                                {{ "VRAM" if key == "vram" else key.replace("_", " ") | title }}
+                                            </dt>
+
+                                            <dd>
+                                                {% if value is mapping %}
+                                                    {% for kind, amount in value.items() %}
+                                                        {{ kind | title }}: {{ amount }}
+
                                                         {% if key == "clock_rate" %}
                                                             GHz
-                                                        {% elif key == "vram" %}
-                                                            GB
                                                         {% endif %}
+
+                                                        {% if not loop.last %}, {% endif %}
+                                                    {% endfor %}
+
+                                                {% else %}
+                                                    {{ value }}
+
+                                                    {% if key == "clock_rate" %}
+                                                        GHz
+                                                    {% elif key == "vram" %}
+                                                        GB
                                                     {% endif %}
-                                                </dd>
-                                            </div>
-                                        {% endfor %}
-                                    </dl>
-                                </details>
+                                                {% endif %}
+                                            </dd>
+                                        </div>
+                                    {% endfor %}
+                                </dl>
+                            </details>
+
+                        {% else %}
+                            <p>No specifications available.</p>
+                        {% endif %}
+                    </section>
+                {% endfor %}
+            </div>
+
+            <button class="compare-button" type="submit">
+                Compare models
+            </button>
+        </form>
+
+        <section class="benchmark-panel" aria-labelledby="benchmark-heading">
+            <h2 id="benchmark-heading">Benchmarks</h2>
+
+            {% if catalog_error %}
+                <p role="alert">{{ catalog_error }}</p>
+
+            {% else %}
+                <div
+                    class="table-scroll"
+                    role="region"
+                    aria-label="Benchmark scores"
+                    tabindex="0"
+                >
+                    <table>
+                        <caption>
+                            Higher is better. Differences use Model B as the baseline.
+                        </caption>
+
+                        <thead>
+                            <tr>
+                                <th scope="col">Test</th>
+
+                                {% for side in sides %}
+                                    <th scope="col">
+                                        {{ side.title }}
+                                        <span>{{ side.name }}</span>
+                                    </th>
+                                {% endfor %}
+
+                                <th scope="col">A vs B</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for row in comparison.rows %}
+                                <tr>
+                                    <th scope="row">{{ row.label }}</th>
+
+                                    <td>
+                                        {{ "{:,.0f}".format(row.a) if row.a is not none else "No data available" }}
+                                    </td>
+
+                                    <td>
+                                        {{ "{:,.0f}".format(row.b) if row.b is not none else "No data available" }}
+                                    </td>
+
+                                    <td class="difference">
+                                        {{ "{:+.1f}%".format(row.difference) if row.difference is not none else "Not comparable" }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                {% if not comparison.compatible %}
+                    <p class="notice">
+                        A percentage needs scores from the same Geekbench
+                        version and test. One or both models may have
+                        no benchmark data.
+                    </p>
+                {% endif %}
+
+                <div class="comparison-grid sources">
+                    {% for side in sides %}
+                        <div>
+                            <h3>{{ side.title }}: benchmark source</h3>
+
+                            {% if side.benchmark and side.benchmark.status == "available" %}
+                                <p>
+                                    Geekbench {{ side.benchmark.geekbenchVersion }}
+                                    · chart average
+                                </p>
+
+                                {% for configuration in side.configurations %}
+                                    <p class="configuration">
+                                        Benchmarked configuration:
+                                        {{ configuration }}
+                                    </p>
+                                {% endfor %}
+
+                                <a
+                                    href="{{ side.benchmark.source }}"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    View source chart ↗
+                                </a>
+
+                            {% elif side.benchmark and side.benchmark.status == "ambiguous_chart_rows" %}
+                                <p>
+                                    No data available: the source contains
+                                    ambiguous configurations.
+                                </p>
+
                             {% else %}
-                                <p>No specifications available.</p>
+                                <p>
+                                    No data available for this exact model
+                                    in the saved catalog.
+                                </p>
                             {% endif %}
-                        </section>
+                        </div>
                     {% endfor %}
                 </div>
 
-                <button class = "compare-button" type = "submit">
-                    Compare models
-                </button>
-            </form>
+                <p class="caveat">
+                    Chart averages come from different systems and test
+                    populations. They are not controlled head-to-head tests.
 
-           <section class = "benchmark-panel" aria-labelledby = "benchmark-heading">
-            <h2 id = "benchmark-heading">Benchmarks</h2>
-                {% if catalog_error %}
-                    <p role = "alert">{{ catalog_error }}</p>
-                {% else %}
-                    <div class = "table-scroll" role = "region" aria-label = "Benchmark scores" tabindex = "0">
-                        <table>
-                            <caption>
-                                Higher is better. Difference use Model B as the baseline.
-                            </caption>
-
-                            <thead>
-                                <tr>
-                                    <th scope = "col">Test</th>
-
-                                    {% for side in sides %}
-                                        <th scope = "col">
-                                            {{ side.title }}
-                                            <span>{{ side.name }}</span>
-                                        </th>
-                                    {% endfor %}
-
-                                    <th scope = "col">A vs B</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                {% for row in comparison.rows %}
-                                    <tr>
-                                        <th scope = "row">{{ row.label }}</th>
-
-                                        <td>
-                                            {{ "{:,.0f}".format(row.a) if row.a is not none else "No data available" }}
-                                        </td>
-
-                                        <td>
-                                            {{ "{:,.0f}".format(row.b) if row.b is not none else "No data available" }}
-                                        </td>
-
-                                        <td class = "difference">
-                                            {{ "{:+.1f}".format(row.difference) if row.difference is not none else "Not comparable" }}
-                                        </td>
-                                    </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-
-                    {% if not comparison.compatible %}
-                        <p class = "notice">
-                            A percentage needs scores from the same Geekbench
-                            version and test. One or both models may have
-                            no benchmark data.
-                        </p>
+                    {% if hardware == "gpu" %}
+                        Vulkan measures GPU compute performance,
+                        not gaming FPS.
                     {% endif %}
+                </p>
 
-                    <div class = "comparison-grid sources">
-                        {% for side in sides %}
-                            <div>
-                                <h3>{{ side.title }}: benchmark source</h3>
-
-                                {% if side.benchmark and side.benchmark.status == "available" %}
-                                    <p>
-                                        Geekbench
-                                        {{ side.benchmark.geekbenchVersion }}
-                                        . chart average
-                                    </p>
-
-                                    {% for configuration in side.configurations %}
-                                        <p class = "configuration">
-                                            Benchmarked configuration:
-                                            {{ configuration }}
-                                        </p>
-                                    {% endfor %}
-
-                                    <a href = "{{ side.benchmark.source }}" target = "_blank" rel = "noopener noreferrer">
-                                        View source chart ↗
-                                    </a>
-                                {% elif side.benchmark and side.benchmark.status == "ambiguous_chart_rows" %}
-                                    <p>
-                                        No data available: the sources contains
-                                        ambiguous configurations.
-                                    </p>
-                                
-                                {% else %}
-                                    <p>
-                                        No data available for this exact model
-                                        in the saved catalog.
-                                    </p>
-                                {% endif %}
-                            </div>
-                        {% endfor %}
-                    </div>
-
-                    <p class = "caveat">
-                        Chart averages come from different systems and test
-                        populations. They are not controlled head-to-head tests.
-
-                        {% if hardware == "gpu" %}
-                            Vulkan measures GPU compute performance,
-                            not gaming FPS.
-                        {% endif %}
+                {% if generated_at %}
+                    <p class="snapshot">
+                        Data snapshot: {{ generated_at[:10] }}
                     </p>
-
-                    {% if generated_at %}
-                        <p class = "snapshot">
-                            Data snapshot: {{ generated_at[:10] }}
-                        </p>
-                    {% endif %}
                 {% endif %}
-           </section>
+            {% endif %}
+        </section>
 
-           <footer class = "site-footer">
-                <a href = "{{ url_for('privacy') }}">Privacy policy</a>
-           </footer>
-        </main>
-    </body>
+        <section class="benchmark-panel ai-panel" aria-labelledby="ai-heading">
+            <h2 id="ai-heading">AI comparison summary</h2>
+
+            <p>
+                See what each model may be suited to, based on the
+                specifications and benchmark data shown above.
+            </p>
+
+            <p class="caveat">
+                When you generate a summary, the selected hardware data
+                is sent through Hack Club AI to the selected Claude
+                Sonnet provider. AI explanations can make mistakes.
+                Check the source data before deciding.
+            </p>
+
+            <button
+                id="ai-summary-button"
+                type="button"
+                data-endpoint="{{ url_for('ai_summary') }}"
+                {% if not ai_enabled %}disabled{% endif %}
+            >
+                Generate AI summary
+            </button>
+
+            <p id="ai-summary-status" role="status" aria-live="polite">
+                {% if not ai_enabled %}
+                    AI summaries are not configured yet.
+                {% endif %}
+            </p>
+
+            <div
+                id="ai-summary-output"
+                class="ai-summary-output"
+                hidden>
+            </div>
+
+            <noscript>
+                <p>Enable JavaScript to generate an AI summary.</p>
+            </noscript>
+        </section>
+
+        <footer class="site-footer">
+            <a href="{{ url_for('privacy') }}">Privacy policy</a>
+        </footer>
+    </main>
+</body>
 </html>

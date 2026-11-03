@@ -1,90 +1,137 @@
 <!DOCTYPE html>
-<html lang = "en">
-    <head>
-        <meta charset = "UTF-8">
-        <meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
-        <title>Privacy policy | TruthLens</title>
-        <link rel = "stylesheet" href = "{{ url_for('static', filename = 'style.css') }}">
-    </head>
-    <body>
-        <main class = "page policy-page">
-            <header>
-                <h1>Privacy policy</h1>
-                <p>TruthLens · Last updated October 24, 2026</p>
-            </header>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy policy | TruthLens</title>
 
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}"
+    >
+</head>
+<body>
+    <main class="page policy-page">
+        <header>
+            <h1>Privacy policy</h1>
+            <p>TruthLens · Last updated October 31, 2026</p>
+        </header>
 
-            <article class = "model-card policy-content">
-                <p>
-                    This policy covers the TruthLens browser extension and its
-                    companion hardware comparison website.
-                </p>
+        <article class="model-card policy-content">
+            <p>
+                This policy covers the TruthLens browser extension
+                and its companion hardware comparison website.
+            </p>
 
-                <h2>What the extension accesses</h2>
-                <p>
-                    TruthLens reads webpage text, the page title, and the current
-                    page URL to identify CPU and GPU models and display hardware
-                    specifications and avialable benchmark comparisons. Its bundled
-                    content script can run on matching webpages, and opening the 
-                    popup requests a scan of the active tab. It does not read your 
-                    browser's history database.
-                </p>
+            <h2>What the extension accesses</h2>
 
-                <h2>Local processing and storage</h2>
-                <p>
-                    Hardware detection uses JavaScript and JSON databases packaged
-                    with the extension. Page content and scan results are processed 
-                    locally in your browser and are not sent to TruthLens servers.
-                    The current extension does not persist scan results or browsing 
-                    records; results are held in memory while its scripts run.
-                </p>
+            <p>
+                TruthLens reads webpage text, the page title, and the
+                current page URL to identify CPU and GPU models and
+                display hardware specifications and available benchmark
+                comparisons. Its bundled content script can run on
+                matching webpages, and opening the popup requests a
+                scan of the active tab. It does not read your browser's
+                history database.
+            </p>
 
-                <h2>Sharing and use of data</h2>
-                <p>
-                    TruthLens does not sell webpage data, share it with advertisers,
-                    or use it for advertising, credit decisions, or unrelated 
-                    profiling. The extension does not include analytics or tracking 
-                    services and does not require an account.
-                </p>
+            <h2>Local processing and storage</h2>
 
-                <h2>The comparison website and external links</h2>
-                <p>
-                    Visiting the companion website makes a normal web request to its 
-                    hosting providerl, Vercel. Requests include technical information 
-                    such as IP adress, browser, information, and requested URL.
-                    Hardware selections appear in the website URL and may be included
-                    in hosting. The Flask application does not intentionally 
-                    save comparison selections in a user database. 
-                </p>
-                <p>
-                    The comparison homepage loads fonts from Google Fonts, which
-                    recieves the network information needed to serve those fonts.
-                    Following benchmark source links open third-party websites with
-                    their own privacy practices. Local page scans are not uploaded
-                    when you use the comparison website.
-                </p>
+            <p>
+                Hardware detection uses JavaScript and JSON databases
+                packaged with the extension. Page content and scan
+                results are processed locally in your browser and are
+                not sent to TruthLens servers. The current extension
+                does not persist scan results or browsing records;
+                results are held in memory while its scripts run.
+            </p>
 
-                <h2>Your control</h2>
-                <p>
-                    You can restrict the extension's site access in your browser
-                    settings, disable it, or unintsall it to stop its access to
-                    webpages. The extension has no stored scan history to delete.
-                </p>
+            <h2>Sharing and use of data</h2>
 
-                <h2>Changes and contact</h2>
-                <p>
-                    This page will be updated when TruthLens's data pratices change.
-                    For privacy questions, contact the maintainer through the 
-                    <a hef = "https://github.com/Aaryan410/TruthLens/issues">
-                        TruthLens issue tracker
-                    </a>.
-                    Issues are public; do not include sensitive personal information.
-                </p>
-            </article>
+            <p>
+                TruthLens does not sell webpage data, share it with
+                advertisers, or use it for advertising, credit
+                decisions, or unrelated profiling. The extension does
+                not include analytics or tracking services and does
+                not require an account.
+            </p>
 
-            <footer class = "site-footer">
-                <a href = "{{ url_for('home') }}">Back to TruthLens</a>
-            </footer>
-        </main>
-    </body>
+            <h2>The comparison website and external links</h2>
+
+            <p>
+                Visiting the companion website makes a normal web
+                request to its hosting provider, Vercel. Requests
+                include technical information such as your IP
+                address, browser information, and requested URL.
+                Hardware selections appear in the website URL and may
+                be included in hosting logs. The Flask application
+                does not intentionally save comparison selections
+                in a user database.
+            </p>
+
+            <p>
+                The comparison homepage loads fonts from Google
+                Fonts, which receives the network information needed
+                to serve those fonts. Following benchmark source
+                links opens third-party websites with their own
+                privacy practices. Local page scans are not uploaded
+                when you use the comparison website.
+            </p>
+
+            <h2>Optional AI summaries on the website</h2>
+
+            <p>
+                AI summaries are generated only when you click
+                Generate AI summary on the comparison website.
+                TruthLens sends the two selected hardware models,
+                their bundled specifications, available benchmark
+                records, and comparison results through Hack Club AI
+                to the selected Claude Sonnet model provider.
+                The request does not include the extension's page
+                scans, page text, page title, page URL, or your
+                browser history.
+            </p>
+
+            <p>
+                Hack Club AI and its upstream providers process the
+                submitted hardware data under their own practices.
+                TruthLens does not control their retention.
+                The server temporarily caches summaries for up to
+                24 hours per running instance and uses short-lived
+                client request counters to limit repeated generation.
+                These counters temporarily use the request IP address
+                in server memory; that address is not included in
+                the AI request payload. Summaries are AI-generated
+                and may contain errors.
+            </p>
+
+            <h2>Your control</h2>
+
+            <p>
+                You can restrict the extension's site access in your
+                browser settings, disable it, or uninstall it to stop
+                its access to webpages. The extension has no stored
+                scan history to delete. You can use the comparison
+                website without generating an AI summary.
+            </p>
+
+            <h2>Changes and contact</h2>
+
+            <p>
+                This page will be updated when TruthLens's data
+                practices change. For privacy questions, contact
+                the maintainer through the
+                <a href="https://github.com/Aaryan410/TruthLens/issues">
+                    TruthLens issue tracker
+                </a>.
+                Issues are public; do not include sensitive
+                personal information.
+            </p>
+        </article>
+
+        <footer class="site-footer">
+            <a href="{{ url_for('home') }}">Back to TruthLens</a>
+        </footer>
+    </main>
+</body>
 </html>

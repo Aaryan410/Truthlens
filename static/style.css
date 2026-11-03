@@ -238,3 +238,43 @@ a {
 .policy-page { max-width: 800px; }
 .policy-content { margin-top: 32px; margin-bottom: 12px; }
 .policy-content p, .policy-content li { color: var(--muted); }
+
+.ai-panel button {
+    max-width: 300px;
+    color: var(--green);
+    cursor: pointer;
+}
+
+.ai-panel button:disabled {
+    opacity: 0.6;
+    cursor: default;
+}
+
+.ai-summary-output {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    line-height: 1.75;
+    margin-top: 24px;
+}
+
+@media (max-width: 720px) {
+    body {
+        padding: 32px 16px;
+    }
+
+    .comparison-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .model-card,
+    .benchmark-panel {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 390px) {
+    .side-fields {
+        grid-template-columns: 1fr;
+    }
+}
