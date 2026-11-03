@@ -4,7 +4,7 @@
     const status = document.getElementById("ai-summary-status");
     const output = document.getElementById("ai-summary-output");
 
-    if (!button || !form || status || !output) {
+    if (!button || !form || !status || !output) {
         return;
     }
 
@@ -43,7 +43,7 @@
         output.setAttribute("aria-busy", "true");
 
         status.textContent = 
-            "Generating summary for th two selected models..."
+            "Generating summary for the two selected models..."
         
         try {
             const response = await fetch(button.dataset.endpoint, {
@@ -54,6 +54,10 @@
                 body: JSON.stringify(renderedSelection),
                 signal: activeRequest.signal
             });
+
+            if (!response.headers.get("content-type")?.includes("application/json")) {
+                throw new Error(`Summary endpoint returned HTTP ${response.status} instead of JSON.`);
+            }
 
             const data = await response.json();
 
@@ -86,16 +90,14 @@
 
             button.textContent = "Show AI summary agian";
         } catch (error) {
-            if (version !== "AbortError") {
-                status.textContent = 
-                    "The summary took so long. Please try again.";
-            } else if (error instanceof SyntaxError) {
-                status.textContent =
-                    "The server returned an unreadable response. " +
-                    "Please try again,.";
-            } else {
-                status.textContent = error.message;
-            }
+            if (version !== selectionVersion) return;
+
+            console.error("AI summary failed:", error);
+
+            status.textContent = error.name === "AbortError"
+                ? "The summary took too long. Please try again."
+                : error.message;
+
         } finally {
             clearTimeout(timer);
             output.removeAttribute("aria-busy");

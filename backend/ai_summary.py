@@ -27,8 +27,15 @@ unknown, not zero. End with a useful conditional choice, or say the data cannot 
 Use plain text, no Markdown, HTML, tables, or links."""
 
 
-class SummaryError:
+class SummaryError(Exception):
     """Bounded cache and request limits for one running server process."""
+
+    def __init__(self, message, status = 503):
+        super().__init__(message)
+        self.status = status
+
+
+class SummaryService:
 
     def __init__(self):
         self.cache = OrderedDict()
