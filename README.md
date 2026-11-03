@@ -43,10 +43,12 @@
 - It detects the hardware on the webpage and when you open the extension it will show out which hardware you want to compare with previous gen on the webpage.
 - For broader comparisons between hardware like between Intel and AMD cpu you will have to visit webpage.
 - I have also provide the links to the sources (geekbench) from where i am getting benchmark scores.
+- I have also added AI summary for the hardware, scroll down and click generate AI summary and it will generate the summary for the 2 selected hardware. (this feature is only available for webpage and not for extension)
 
 ## Run it locally (webpage)?
 - Well clone the repo.
 - Run "python app.py" to run it locally.
+- (for ai summary you have create .env file and add the "HACKCLUB_API_KEY" where you will put hackclub ai api keys or any keys you want to use, then also "HACKCLUB_AI_MODEL" where you will put 'anthropic/claude-sonnet-5.5')
 
 ## Run it locally (extension)?
 - Clone the repo.
