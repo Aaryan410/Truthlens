@@ -22,10 +22,7 @@
         output.hidden = true;
         output.textContent = "";
         button.disabled = true;
-
-        status.textContent = event.target.name?.endsWith("_model")
-            ? "Click Compare models before generating a summary"
-            : "Updating comparison...";
+        status.textContent = "Updating comparison...";
     });
 
     button.addEventListener("click", async () => {
