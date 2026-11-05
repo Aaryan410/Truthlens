@@ -48,7 +48,7 @@
 ## Run it locally (webpage)?
 - Well clone the repo.
 - Run "python app.py" to run it locally.
-- (for ai summary you have create .env file and add the "HACKCLUB_API_KEY" where you will put hackclub ai api keys or any keys you want to use, then also "HACKCLUB_AI_MODEL" where you will put 'anthropic/claude-sonnet-5.5')
+- (for ai summary you have create .env file and add the "HACKCLUB_API_KEY" where you will put hackclub ai api keys or any keys you want to use, then also "HACKCLUB_AI_MODEL" where you will put 'anthropic/claude-sonnet-5.5'. i have provided .env.example for reference)
 
 ## Run it locally (extension)?
 - Clone the repo.
