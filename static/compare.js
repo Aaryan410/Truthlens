@@ -1,7 +1,7 @@
 const form = document.getElementById("compare-form");
 const compareStatus = document.getElementById("compare-status");
 
-form.addEventListener("change", (event) => {
+form.addEventListener("submit", (event) => {
     compareStatus.textContent = event.submitter
         ? "Loading benchmarks..."
         : "Updating model options...";

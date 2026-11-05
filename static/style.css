@@ -265,6 +265,18 @@ a {
     display: none;
 }
 
+.compare-button {
+    cursor: pointer;
+    transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+
+.compare-button:not(:disabled):hover,
+.compare-button:not(:disabled):focus-visible {
+    background-color: #1b2e22;
+    border-color: var(--green, #7fb58a);
+    color: #f1f4f1; 
+}
+
 @media (max-width: 720px) {
     body {
         padding: 32px 16px;
