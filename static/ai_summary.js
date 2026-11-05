@@ -17,14 +17,15 @@
 
     form.addEventListener("change", () => {
         selectionVersion += 1;
-        
         activeRequest?.abort();
 
         output.hidden = true;
         output.textContent = "";
         button.disabled = true;
 
-        status.textContent = "Updating comparison...";
+        status.textContent = event.target.name?.endsWith("_model")
+            ? "Click Compare models before generating a summary"
+            : "Updating comparison...";
     });
 
     button.addEventListener("click", async () => {

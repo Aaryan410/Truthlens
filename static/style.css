@@ -257,6 +257,14 @@ a {
     margin-top: 24px;
 }
 
+.compare-status {
+    text-align: center;
+}
+
+.compare-status:empty {
+    display: none;
+}
+
 @media (max-width: 720px) {
     body {
         padding: 32px 16px;

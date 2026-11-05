@@ -40,7 +40,7 @@ def build_side(prefix, hardware, catalog, selections = None):
     try:
         data = load_data(hardware, company)
     except (OSError, json.JSONDecodeError):
-        app.longer.exception("Could not load hardware database")
+        app.logger.exception("Could not load hardware database")
         data = {}
         error = "Hardware specifications could not be loaded."
 
@@ -72,7 +72,7 @@ def home():
     try:
         catalog = load_benchmark_catalog()
     except:
-        app.longer.exception("Could not load benchmark catalog")
+        app.logger.exception("Could not load benchmark catalog")
         catalog = {}
         catalog_error = "Benchmark data could not be loaded. Check database/benchmark_catalog.json."
 

@@ -142,6 +142,11 @@
             <button class="compare-button" type="submit">
                 Compare models
             </button>
+
+            <button class = "compare-button" type = "submit" formaction = "{{ url_for('home', _anchor = 'benchmark-heading') }}">
+                Compare models
+            </button>
+            <p id = "compare-status" class = "notice compare-status" role = "status"></p>
         </form>
 
         <section class="benchmark-panel" aria-labelledby="benchmark-heading">
@@ -232,6 +237,11 @@
                                 >
                                     View source chart ↗
                                 </a>
+
+                                <p>
+                                    This model is listed in the hardware database, but saved 
+                                    Geekbench chart has no scores for it.
+                                </p>
 
                             {% elif side.benchmark and side.benchmark.status == "ambiguous_chart_rows" %}
                                 <p>
